@@ -1,0 +1,92 @@
+         street_name          | id1 
+------------------------------+-----
+ 4TH                          |   0
+ 4TH                          |   0
+ 4TH                          |   0
+ 4TH                          |   0
+ 4TH                          |   0
+ 4TH                          |   0
+ 4TH                          |   0
+ 4TH                          |   0
+ 4TH                          |   0
+ WELLS FARGO                  |   0
+ 5TH                          |   0
+ 5TH                          |   0
+ 5TH                          |   0
+ 5TH                          |   0
+ 5TH                          |   0
+ 5TH                          |   0
+ 5TH                          |   0
+ 5TH AVE S TO NB I35W         |   0
+ INTERSTATE 35W               |   0
+ INTERSTATE 35W               |   0
+ INTERSTATE 35W               |   0
+ INTERSTATE 35W               |   0
+ INTERSTATE 35W               |   0
+ INTERSTATE 35W               |   0
+ INTERSTATE 35W               |   0
+ NB I35W TO UNIVERSITY AVE SE |   0
+ NB I35W TO 4TH ST SE         |   0
+ 4TH                          |   0
+ 4TH                          |   0
+ 8TH                          |   0
+ 8TH                          |   0
+ 8TH                          |   0
+ 8TH                          |   0
+ 8TH                          |   0
+ 8TH                          |   0
+ 6TH                          |   0
+ 9TH                          |   0
+ 5TH                          |   0
+ HENNEPIN                     |   0
+ PIERCE                       |   0
+ WINTER                       |   0
+ FILLMORE                     |   0
+ FILLMORE                     |   0
+ FILLMORE                     |   0
+ 4TH                          |   1
+ 4TH                          |   1
+ 4TH                          |   1
+ 4TH                          |   1
+ 4TH                          |   1
+ 4TH                          |   1
+ 4TH                          |   1
+ 4TH                          |   1
+ 4TH                          |   1
+ WELLS FARGO                  |   1
+ 5TH                          |   1
+ 5TH                          |   1
+ 5TH                          |   1
+ 5TH                          |   1
+ 5TH                          |   1
+ 5TH                          |   1
+ 5TH                          |   1
+ 5TH AVE S TO NB I35W         |   1
+ INTERSTATE 35W               |   1
+ INTERSTATE 35W               |   1
+ INTERSTATE 35W               |   1
+ INTERSTATE 35W               |   1
+ INTERSTATE 35W               |   1
+ INTERSTATE 35W               |   1
+ INTERSTATE 35W               |   1
+ NB I35W TO UNIVERSITY AVE SE |   1
+ NB I35W TO 4TH ST SE         |   1
+ 4TH                          |   1
+ 4TH                          |   1
+ 8TH                          |   1
+ 8TH                          |   1
+ 8TH                          |   1
+ 7TH                          |   1
+ 7TH                          |   1
+ 6TH                          |   1
+ 6TH                          |   1
+ 9TH                          |   1
+ 5TH                          |   1
+ HENNEPIN                     |   1
+ PIERCE                       |   1
+ WINTER                       |   1
+ FILLMORE                     |   1
+ FILLMORE                     |   1
+ FILLMORE                     |   1
+(88 rows)
+
