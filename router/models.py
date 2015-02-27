@@ -41,7 +41,7 @@ class MinneapolisStreets(models.Model):
 
 
 class MasterBikeTrails(models.Model):
-    objectid = models.IntegerField()
+    objectid = models.IntegerField(blank=True,null=True)
     active = models.IntegerField(blank=True,null=True)
     notes = models.CharField(max_length=250,blank=True)
     name = models.CharField(max_length=50,blank=True)
@@ -60,7 +60,7 @@ class MasterBikeTrails(models.Model):
     maintainer = models.CharField(max_length=35,blank=True)
     surf_type = models.CharField(max_length=25,blank=True)
     surf_qual = models.CharField(max_length=25,blank=True)
-    the_geom = models.LineStringField(srid=26915,blank=True)
+    the_geom = models.LineStringField(srid=26915,null=True,blank=True)
     objects = models.GeoManager()
 
     def __str__(self):
