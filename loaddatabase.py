@@ -1,8 +1,8 @@
 import django
-from router.models import MasterBikeTrails
+from router.models import masterbiketrails
 from django.contrib.gis.gdal import DataSource
 from django.contrib.gis.utils import LayerMapping
-
+from databaseloader import masterbiketrails_mapping
 django.setup()
 
 mapping = {'object_id':'OBJECTID',
@@ -19,29 +19,10 @@ mapMinneapolis = {'object_id':'GBSID',
             'oneway':'ONEWAY'}
 
 map9CountyMetro = {
-    'objectid' : 'OBJECTID',
-    'active' : 'ACTIVE',
-    'notes' : 'NOTES',
-    'name' : 'NAME',
-    'width' : 'WIDTH',
-    'grade' : 'GRADE',
-    'lighted' : 'LIGHTED',
-    'operation' : 'OPPERATION',
-    'proposed' : 'PROPOSED',
-    'road_name' : "ROAD_NAME",
-    'road_speed' : "ROAD_SPEED",
-    'lane_numb' : "LANE_NUMB",
-    'lane_width' : "LANE_WIDTH",
-    'lane_dir' : "LANE_DIR",
-    'lane_type' : 'LANE_TYPE',
-    'cost' : 'SHAPE_LENG',
-    'maintainer' : 'MAINTAINER',
-    'surf_type' : "SURF_TYPE",
-    "surf_qual" : "SURF_QAUL",
     'the_geom' : 'LINESTRING'}
 
 def run():
-    lm = LayerMapping(MasterBikeTrails,DataSource("9CountyMetro/Bikeways.shp"),map9CountyMetro)
+    lm = LayerMapping(masterbiketrails, DataSource("9CountyMetro/Bikeways.shp"),map9CountyMetro)
     lm.save(verbose=False,step=1000,progress=True)
 
 
