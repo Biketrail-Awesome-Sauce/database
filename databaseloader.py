@@ -1,44 +1,5 @@
+# This is an auto-generated Django model module created by ogrinspect.
 from django.contrib.gis.db import models
-
-
-# Here is the Hennepin County Street Centerlines table
-
-#the shapefile has EPSG:26915 crs
-class HennepinStreets(models.Model):
-    object_id = models.IntegerField()
-    street_name = models.CharField(max_length=83)
-    cost = models.FloatField()
-    join_id = models.IntegerField()
-
-    source = models.IntegerField(null=True,blank=True)
-    target = models.IntegerField(null=True,blank=True)
-
-    the_geom = models.LineStringField(srid=4326)
-
-    objects = models.GeoManager()
-
-    def __str__(self):
-        return "On {0} for {1} meters".format(self.street_name, str(self.cost))
-
-
-class MinneapolisStreets(models.Model):
-    object_id = models.FloatField()
-    street_name = models.CharField(max_length=35)
-    speed_lim = models.IntegerField()
-    oneway = models.CharField(max_length=2)
-    cost = models.FloatField()
-
-    source = models.IntegerField(null=True, blank=True)
-    target = models.IntegerField(null=True,blank=True)
-
-    the_geom = models.LineStringField(srid=4326)
-
-    objects = models.GeoManager()
-
-    def __str__(self):
-        return "On {0} for {1} meters".format(self.street_name, str(self.cost))
-
-
 
 class masterbiketrails(models.Model):
     objectid = models.IntegerField()
@@ -92,5 +53,55 @@ class masterbiketrails(models.Model):
     geom = models.LineStringField(srid=26915)
     objects = models.GeoManager()
 
-    def __str__(self):
-        return "On {0} for {1} meters".format(self.name, str(self.shape_leng))
+# Auto-generated `LayerMapping` dictionary for masterbiketrails model
+masterbiketrails_mapping = {
+    'objectid' : 'OBJECTID',
+    'source' : 'SOURCE',
+    'side' : 'SIDE',
+    'type' : 'TYPE',
+    'jurisdicti' : 'JURISDICTI',
+    'active' : 'ACTIVE',
+    'notes' : 'NOTES',
+    'name' : 'NAME',
+    'fac_id' : 'FAC_ID',
+    'miles' : 'MILES',
+    'width' : 'WIDTH',
+    'direction' : 'DIRECTION',
+    'grade' : 'GRADE',
+    'speed' : 'SPEED',
+    'fac_qual' : 'FAC_QUAL',
+    'lighted' : 'LIGHTED',
+    'opperation' : 'OPPERATION',
+    'proposed' : 'PROPOSED',
+    'arterial' : 'ARTERIAL',
+    'conn_gap' : 'CONN_GAP',
+    'stops' : 'STOPS',
+    'class_' : 'CLASS',
+    'road_name' : 'ROAD_NAME',
+    'road_numb' : 'ROAD_NUMB',
+    'road_code' : 'ROAD_CODE',
+    'road_speed' : 'ROAD_SPEED',
+    'road_comm' : 'ROAD_COMM',
+    'lane_numb' : 'LANE_NUMB',
+    'lane_width' : 'LANE_WIDTH',
+    'lane_dir' : 'LANE_DIR',
+    'lane_type' : 'LANE_TYPE',
+    'shld_width' : 'SHLD_WIDTH',
+    'shld_type' : 'SHLD_TYPE',
+    'shld_rumb' : 'SHLD_RUMB',
+    'shld_park' : 'SHLD_PARK',
+    'shld_bus' : 'SHLD_BUS',
+    'shape_leng' : 'SHAPE_LENG',
+    'maintainer' : 'MAINTAINER',
+    'install_yr' : 'INSTALL_YR',
+    'install_or' : 'INSTALL_OR',
+    'suitabilit' : 'SUITABILIT',
+    'shld_date' : 'SHLD_DATE',
+    'shld_plow' : 'SHLD_PLOW',
+    'shld_drain' : 'SHLD_DRAIN',
+    'road_aadt' : 'ROAD_AADT',
+    'road_hcadt' : 'ROAD_HCADT',
+    'surf_type' : 'SURF_TYPE',
+    'surf_qaul' : 'SURF_QAUL',
+    'geom' : 'LINESTRING',
+}
