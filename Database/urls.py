@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-from Data.views import MainPage
+from django.views.decorators.csrf import csrf_exempt
+from Data.views import MainPage, SearchAjax
 
 urlpatterns = patterns('',
     # Examples:
@@ -9,5 +10,5 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', MainPage.as_view() ),
-    url(r'^search/', include('haystack.urls') ),
+    url(r'^searchAjax/', csrf_exempt(SearchAjax.as_view()) ),
 )
