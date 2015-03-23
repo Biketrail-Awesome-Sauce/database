@@ -25,7 +25,7 @@ mapping = {
     'the_geom' : 'LINESTRING'
 
 }
+def run():
+    lm = LayerMapping(MinnesotaBikeTrails,"cyclopath/minnesota.shp",mapping=mapping)
 
-lm = LayerMapping(MinnesotaBikeTrails,"cyclopath/minnesota.shp",mapping=mapping)
-
-lm.save(verbose=True)
+    lm.save(verbose=True)

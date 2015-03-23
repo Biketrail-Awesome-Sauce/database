@@ -15,7 +15,7 @@
 
 
             Y.one('#ac-input').plug(Y.Plugin.AutoComplete, {
-                source: "http://localhost:8983/solr/minnesota_shard1_replica1/select?q=*{query}*&wt=xml"
+                source: "http://localhost:8000/search/?q={query}"
 
             });
         });
