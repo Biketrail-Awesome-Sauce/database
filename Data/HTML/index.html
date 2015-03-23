@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>MNBikeways</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="http://yui.yahooapis.com/3.18.1/build/yui/yui-min.js"></script>
+
+    <link href="jquery.liveSearch.css"/>
+    <script>
+
+        YUI().use('autocomplete','autocomplete-highlighters', function (Y) {
+            // AutoComplete is available and ready for use. Add implementation
+            //
+
+
+            Y.one('#ac-input').plug(Y.Plugin.AutoComplete, {
+                source: "http://localhost:8983/solr/minnesota_shard1_replica1/select?q=*{query}*&wt=xml"
+
+            });
+        });
+
+    </script>
+
+
+</head>
+
+<body>
+            <input type="text" id="ac-input" />
+
+</div>
+
+</body>
+</html>
