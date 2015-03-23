@@ -9,6 +9,8 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from config import dbName, dbUser, dbPassword
+
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -62,7 +64,11 @@ WSGI_APPLICATION = 'Database.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': dbName,
+        'USER' : dbUser,
+        'PASSWORD' : dbPassword,
+        'HOST' : '127.0.0.1',
+        'PORT' : '5432',
     }
 }
 

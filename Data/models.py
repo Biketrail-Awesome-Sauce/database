@@ -27,3 +27,6 @@ class MinnesotaBikeTrails(models.Model):
 
     the_geom = models.LineStringField(srid=4326)
     objects = models.GeoManager()
+
+    def __str__(self):
+        return self.ccp_name
