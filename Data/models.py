@@ -1,5 +1,5 @@
 from django.contrib.gis.db import models
-
+from django.contrib.gis.geos import GEOSGeometry
 
 
 class MinnesotaBikeTrails(models.Model):
@@ -30,3 +30,7 @@ class MinnesotaBikeTrails(models.Model):
 
     def __str__(self):
         return self.ccp_name
+
+
+    def get_location(self):
+        return GEOSGeometry(self.the_geom).centroid

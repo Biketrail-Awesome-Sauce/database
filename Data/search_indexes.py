@@ -11,10 +11,10 @@ class MinnesotaTrailsSearchable(indexes.SearchIndex, indexes.Indexable):
     chicago_algorithm = indexes.FloatField(model_attr='rtng_cbf7')
     cyclopath_algorithm = indexes.FloatField(model_attr='rtng_ccpx')
     user_rating = indexes.FloatField(model_attr='rtng_mean')
-    geometry = indexes.LocationField(model_attr='the_geom')
+    geometry = indexes.LocationField(model_attr='get_location')
 
     #for autocomplete
-    content_auto = indexes.EdgeNgramField(model_attr='content')
+    content_auto = indexes.EdgeNgramField(model_attr='ccp_name')
 
     def get_model(self):
         return MinnesotaBikeTrails
