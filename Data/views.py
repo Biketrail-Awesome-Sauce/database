@@ -11,6 +11,6 @@ class MainPage(TemplateView):
 
 class SearchAjax(TemplateView):
     def get(self, request, *args, **kwargs):
-        qs = SearchQuerySet().autocomplete(content_auto=request.GET.get('q',""))[:5]
+        qs = SearchQuerySet().filter(content_auto=request.GET.get('q',""))[:5]
         json = {'name':q.content_auto for q in qs}
         return HttpResponse(dumps(json))
