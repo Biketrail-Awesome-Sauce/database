@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from haystack.query import SearchQuerySet
-from django.core import serializers
 from django.http import HttpResponse
+from json import dumps
 
 class MainPage(TemplateView):
     def get(self, request, *args, **kwargs):
@@ -12,5 +12,5 @@ class MainPage(TemplateView):
 class SearchAjax(TemplateView):
     def get(self, request, *args, **kwargs):
         qs = SearchQuerySet().autocomplete(content_auto=request.GET.get('q',""))[:5]
-        json = serializers.serialize('json',qs)
-        return HttpResponse(json,mimetype="application/json")
+        json = [q.content_auto for q in qs]
+        return HttpResponse(dumps(json),mimetype="application/json")
