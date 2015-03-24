@@ -1,6 +1,6 @@
 from django.contrib import admin
 from Data.models import MinnesotaBikeTrails
-from Data.searchIndex import MinnesotaTrailsSearchable
+from Data.search_indexes import MinnesotaTrailsSearchable
 # Register your models here.
 
 

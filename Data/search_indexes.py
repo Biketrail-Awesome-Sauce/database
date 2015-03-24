@@ -19,5 +19,8 @@ class MinnesotaTrailsSearchable(indexes.SearchIndex, indexes.Indexable):
     def get_model(self):
         return MinnesotaBikeTrails
 
+    def index_queryset(self, using=None):
+        return self.get_model().objects.all()
+
     def __str__(self):
         return self.text
