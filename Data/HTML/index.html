@@ -15,6 +15,7 @@
             Y.one('body').addClass('yui3-skin-sam');
 
             Y.one('#ac-input').plug(Y.Plugin.AutoComplete, {
+                resultHighlighter: 'phraseMatch',
                 source: "http://localhost:8000/searchAjax/?q={query}"
 
             });
