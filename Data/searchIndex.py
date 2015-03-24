@@ -7,7 +7,7 @@ from Data.models import MinnesotaBikeTrails
 
 
 class MinnesotaTrailsSearchable(indexes.SearchIndex, indexes.Indexable):
-    text = indexes.CharField(document=True, template=True, model_attr='ccp_name')
+    text = indexes.CharField(document=True, use_template=True, model_attr='ccp_name')
     chicago_algorithm = indexes.FloatField(model_attr='rtng_cbf7')
     cyclopath_algorithm = indexes.FloatField(model_attr='rtng_ccpx')
     user_rating = indexes.FloatField(model_attr='rtng_mean')

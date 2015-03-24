@@ -11,6 +11,6 @@ class MainPage(TemplateView):
 
 class SearchAjax(TemplateView):
     def get(self, request, *args, **kwargs):
-        qs = SearchQuerySet().autocomplete(content_auto=request.GET.get('q',""))[:5]
+        qs = SearchQuerySet().autocomplete(text=request.GET.get('q',""))[:5]
         json = serializers.serialize('json',qs)
         return HttpResponse(json)
