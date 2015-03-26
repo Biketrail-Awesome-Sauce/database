@@ -6,19 +6,59 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="http://yui.yahooapis.com/3.18.1/build/yui/yui-min.js"></script>
 
-    <link href="jquery.liveSearch.css"/>
+
     <script>
 
-        YUI().use('autocomplete','autocomplete-highlighters', function (Y) {
-            // AutoComplete is available and ready for use. Add implementation
-            //
+
+
+
+
+        YUI().use('autocomplete','autocomplete-highlighters','app','node', function (Y) {
+
+
+
+
+            var fromToList = new Y.ModelList();
+
+
             Y.one('body').addClass('yui3-skin-sam');
 
             Y.one('#ac-input').plug(Y.Plugin.AutoComplete, {
+                render : true,
                 resultHighlighter: 'phraseMatch',
-                source: "http://localhost:8000/searchAjax/?q={query}"
+                source: "http://localhost:8000/searchAjax/?q={query}",
+                on:{
+                    select:function(o){
+                        fromToList.add(new Y.Model({
+                                street:o.result.raw[0]}));
+                    }
+
+                }
 
             });
+
+            var toFromView = new Y.View({
+                        render: function () {
+                             var container = this.get('container'),
+                                html      = Y.Lang.sub(this.template, this.get('model').toJSON());
+
+                                // Render this view's HTML into the container element.
+                            container.setHTML(html);
+
+                            // Append the container element to the DOM if it's not on the page already.
+                            if (!container.inDoc()) {
+                        Y.one('body').append(container);
+                        }
+
+                return this;
+                },
+                        container: Y.one('.toFromclass'),
+                        model: fromToList,
+                        template: 'Street: {street}'
+                    });
+
+            var app = new Y.App({views:{toFromView:{preserve:true}}});
+            app.render();
         });
 
     </script>
@@ -28,6 +68,8 @@
 
 <body class="yui3-skin-sam">
             <input type="text" id="ac-input" />
+
+            <p class="toFromclass"></p>
 
 </div>
 

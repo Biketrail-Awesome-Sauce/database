@@ -16,6 +16,7 @@ class MinnesotaTrailsSearchable(indexes.SearchIndex, indexes.Indexable):
     #for autocomplete
     content_auto = indexes.EdgeNgramField(model_attr='ccp_name')
 
+
     def get_model(self):
         return MinnesotaBikeTrails
 
