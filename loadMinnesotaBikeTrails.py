@@ -1,6 +1,6 @@
 __author__ = 'boyd'
 from django.contrib.gis.utils import LayerMapping
-from Data.models import MinnesotaBikeTrails
+from Data.models import MinnesotaBikeTrails,BestBikeTrails
 
 mapping = {
     'ccp_name':'CCP_NAME',
@@ -26,6 +26,6 @@ mapping = {
 
 }
 def run():
-    lm = LayerMapping(MinnesotaBikeTrails,"cyclopath/minnesota.shp",mapping=mapping)
+    lm = LayerMapping(BestBikeTrails,"cyclopath/best.shp",mapping=mapping)
 
     lm.save(verbose=True)

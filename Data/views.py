@@ -4,11 +4,13 @@ from haystack.query import SearchQuerySet
 from haystack.utils.geo import Point
 from django.http import HttpResponse
 from django.contrib.gis.measure import D
-from django.core import serializers
-from Data.models import MinnesotaBikeTrails
+from django.contrib.gis.geos import GEOSGeometry
+from django.db import connection
+
+from Data.models import BestBikeTrails, MinnesotaBikeTrails
 
 
-from json import dumps
+from json import dumps, loads
 
 class MainPage(TemplateView):
     def get(self, request, *args, **kwargs):
@@ -27,6 +29,29 @@ class SearchAjax(TemplateView):
 
 class GeoJsonAjax(View):
     def get(self,request, *args, **kwargs):
-        qs = MinnesotaBikeTrails.objects.filter(the_geom__distance_lte=(Point(request.GET.get('lng1','-93.265')),D(mi=2)))
-        geoJson = serializers.serialize('json',qs)
-        return HttpResponse(geoJson,content_type="application/json")
+        lat = float(request.GET.get('lat1','45'))
+        lng = float(request.GET.get('lng1','-93.265'))
+        qs = BestBikeTrails.objects.filter(the_geom__distance_lte=(Point(lng,lat,srid=4326),D(mi=2)))
+        gj = []
+        for item in qs:
+            poly = GEOSGeometry(item.the_geom,srid=4326)
+            gj.append(loads(poly.geojson))
+        return HttpResponse(dumps(gj),content_type="application/json")
+
+
+class RouterAjax(View):
+    def get(self, request, *args, **kwargs):
+        id1 = request.GET.get('bid')
+        id2 = request.GET.get('eid')
+        sql_inside_of_function = "select id, source, target, cost from \"Data_minnesotabiketrails\"\'"
+        sql_function = "select ccp_name, the_geom from pgr_dijkstra(\'"
+
+        cursor = connection.cursor()
+        cursor.execute(sql_function+sql_inside_of_function+","+str(id1)+","+str(id2)+", true,false) join \"Data_minnesotabiketrails\" as bt on bt.id=id2")
+        all = cursor.fetchall()
+        names = []
+        gj = []
+        for item in all:
+            names.append(item[0])
+            gj.append(loads(GEOSGeometry(item[1]).geojson))
+        return HttpResponse(dumps({'names':names,'geojson':gj}))

@@ -19,17 +19,17 @@
 
 
     <script>
-        angular.module('SearchAndRouteModule',['ui.bootstrap','leaflet-directive']).controller('SearchAndRouteController',function($scope,$http,leafletData){
-            $scope.getLocation =function(val) {
-    return $http.get('http://localhost:8000/searchAjax/', {
-      params: {
-        q: val
-      }
-    }).then(function(response){
-      return response.data;
+        angular.module('SearchAndRouteModule',['ui.bootstrap','leaflet-directive']).controller('SearchAndRouteController',function($scope,$http) {
+            $scope.getLocation = function (val) {
+                return $http.get('http://localhost:8000/searchAjax/', {
+                    params: {
+                        q: val
+                    }
+                }).then(function (response) {
+                    return response.data;
 
-    });
-  };
+                });
+            };
 
             $scope.fromToArray = new Array();
             $scope.fromToArray.push("From: ");
@@ -37,41 +37,51 @@
 
             $scope.Selected = new Array();
 
-            $scope.onSelect = function($item,$model,$label){
-                if($scope.Selected.length!=2) {
+            $scope.onSelect = function ($item, $model, $label) {
+                if ($scope.Selected.length != 2) {
                     $scope.Selected.push($item);
                 }
             }
 
-            $scope.rearrange = function(){
-                    var tmp = $scope.Selected[0];
-                    $scope.Selected[0]=$scope.Selected[$scope.Selected.length-1];
-                    $scope.Selected[$scope.Selected.length-1]=tmp;
+            $scope.rearrange = function () {
+                var tmp = $scope.Selected[0];
+                $scope.Selected[0] = $scope.Selected[$scope.Selected.length - 1];
+                $scope.Selected[$scope.Selected.length - 1] = tmp;
 
             }
-            function getLocation() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition);
-        }}
 
-            var lat=undefined;
-            var lng=undefined;
+            function getLocation() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(showPosition);
+                }
+            }
+
+            var lat = undefined;
+            var lng = undefined;
 
             function showPosition(position) {
 
                 lat = position.coords.latitude;
                 lng = position.coords.longitude;
-                leafletData.getMap().then(function (map) {
-                    var data = $http.get('http://localhost:8000/geoJson/', {params: {lat1: lat,lng1:lng}}).then(function (response) {
-                                return response.data;});
-                    L.geoJSON(
-                            data,
+                $scope.center= {
+                            lat: lat,
+                            lng: lng,
+                            zoom: 4,
+                    autoDiscover:true
+                            };
+                $http.get("http://localhost:8000/geoJson/", {'lat1': lat, 'lng1': lng}).success(function (data, status) {
+                    angular.extend($scope, {
+                        geojson: {
+                            data: data,
+                            style: {color: 'green'}
+                        }
 
-                            {style: {color: 'green'}}).addTo(map);
+                    });
+                });
 
-                })
             }
-        getLocation();
+            getLocation();
+
         });
 
 
@@ -98,7 +108,7 @@
     <div ng-click="rearrange()" class="glyphicon glyphicon-sort"></div>
 </div>
     </div>
-    <leaflet></leaflet>
+    <leaflet geojson="geojson" center="center" height="600" width="600"></leaflet>
 </div>
 </body>
 </html>
