@@ -14,7 +14,7 @@ from json import dumps, loads
 
 class MainPage(TemplateView):
     def get(self, request, *args, **kwargs):
-        return render(request,'index.html')
+        return render(request, 'index.html')
 
 
 class SearchAjax(TemplateView):
