@@ -41,7 +41,7 @@ class GeoJsonAjax(View):
 
 class RouterAjax(View):
     def get(self, request, *args, **kwargs):
-        id1 = request.GET.get('bid')
+        id1 =  request.GET.get('bid')
         id2 = request.GET.get('eid')
         sql_inside_of_function = "select id, source, target, cost from \"Data_minnesotabiketrails\"\'"
         sql_function = "select ccp_name, the_geom from pgr_dijkstra(\'"
