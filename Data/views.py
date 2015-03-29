@@ -9,8 +9,10 @@ from django.db import connection
 
 from Data.models import BestBikeTrails, MinnesotaBikeTrails
 
-
+from requests import get
+import xml.etree.ElementTree as ET
 from json import dumps, loads
+
 
 class MainPage(TemplateView):
     def get(self, request, *args, **kwargs):
@@ -55,3 +57,21 @@ class RouterAjax(View):
             names.append(item[0])
             gj.append(loads(GEOSGeometry(item[1]).geojson))
         return HttpResponse(dumps({'names':names,'geojson':gj}))
+
+
+class NiceRideAjax(View):
+    def get(self, request, *args, **kwargs):
+        r = get(url="https://secure.niceridemn.org/data2/bikeStations.xml")
+        doc = ET.fromstring(r.text)
+        stations = doc.findall('station')
+        # this isn't really json it is a bunch of  python dicts inside a python list
+        json = [{item.tag: item.text for item in station} for station in stations]  #look at that beauty there
+        gj = []
+        for d in json:
+            if d['public']=='true':
+                lat = d['lat']
+                long = d['long']
+                del d['lat']
+                del d['long']
+                gj.append({'type': 'Point', 'coordinates': [long, lat], 'properties': d})
+        return HttpResponse(dumps(gj), content_type="application/json; charset='utf-8'")
