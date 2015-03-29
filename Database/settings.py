@@ -96,7 +96,8 @@ TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'templates')
 )
 
-STATICFILES_DIRS = (os.path.join(BASE_DIR,'Data/statics'),)
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'Data/javascript'),
+os.path.join(BASE_DIR,'Data/images'))
 
 #haystack search settings
 
