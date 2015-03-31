@@ -151,8 +151,9 @@
     <div ng-bind="address[0]+address[1]"></div>
 
     </div>
-    <div ng-click="rearrange()" class="glyphicon glyphicon-sort"></div>
+
 </div>
+    <div ng-click="rearrange()" class="glyphicon glyphicon-sort"></div>
     </div>
   </div>
 
@@ -186,7 +187,9 @@
         $scope.getBiketrail = function (val) {
             return $http.get('http://localhost:8000/searchAjax/', {
                 params: {
-                    q: val
+                    q: val,
+                    lat: latitude,
+                    lng: longitude
                 }
             }).then(function (response) {
                 return response.data;

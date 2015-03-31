@@ -21,7 +21,9 @@ class MainPage(TemplateView):
 
 class SearchAjax(TemplateView):
     def get(self, request, *args, **kwargs):
-        qs = SearchQuerySet().filter(content_auto=request.GET.get('q',"")).distance('geometry',Point(-93.265,45,srid=4326)).order_by('distance')
+        lat = float(request.GET.get('lat',''))
+        lng = float(request.GET.get('lng',''))
+        qs = SearchQuerySet().filter(content_auto=request.GET.get('q',"")).distance('geometry',Point(lng,lat,srid=4326)).order_by('distance')
         if len(qs)>6:
             qs = qs[:5]
         json = [(q.content_auto," "+str(q.distance.m)+" meters") for q in qs]
