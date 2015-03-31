@@ -107,10 +107,6 @@
             clear: both;
         }
 
-        #map {
-            height: 600px;
-
-        }
 
         #error {
             display: none;
@@ -120,13 +116,14 @@
             padding: 2px 5px 2px 5px;
         }
     </style>
+
+
 </head>
 
-<body app="SearchAndRouteModule" controller="SearchAndRouteController">
+<body ng-app="SearchAndRouteModule" ng-controller="SearchAndRouteController">
 <div id="error">Error Test</div>
 
 <div id="location">Loading your location...</div>
-
   <div id="header">
     <div id="hamburger"></div>
     <div id="menu">
@@ -139,9 +136,11 @@
     <div id="logo"></div>
     <div id="headerTitle">MNBikeways</div>
     <div id="search">
-      <img src="static/search.png" alt="Search Icon" class="searchImage" />
+      <img ng-click="isSearchCollapsed=!isSearchCollapsed" src="static/search.png" alt="Search Icon" class="searchImage" />
     </div>
+      </div>
     <div class="clearBoth"></div>
+      <div collapse="isSearchCollapsed" class="row">
       <div class="col-xs-4">
 <input type="text" ng-model="asyncSelected" placeholder="Search biketrails" typeahead="address[0]+address[1] for address in getBiketrail($viewValue)" typeahead-on-select="onSelect($item,$model,$label)" class="form-control">
 </div>
@@ -154,6 +153,7 @@
     </div>
     <div ng-click="rearrange()" class="glyphicon glyphicon-sort"></div>
 </div>
+    </div>
   </div>
 
 <div id="map"></div>
@@ -180,6 +180,8 @@
             $('#map').width(wWidth);
         });
 
+
+        $scope.isSearchCollapsed = true;
 
         $scope.getBiketrail = function (val) {
             return $http.get('http://localhost:8000/searchAjax/', {
@@ -335,35 +337,8 @@
         //User's Location Marker
         L.marker([latitude, longitude]).bindPopup("You").addTo(map);
 
-        //Will be set in the ajax success
-        $.get("http://mnbikeways.herokuapp.com/OSM", {'lat': latitude, 'lon': longitude}, function (data) {
-            L.geoJson(data, {
-                style: function (feature) {
-                    return {color: 'green'};
-                }
-            }).addTo(map);
-        });
 
-        //Pull Lat/Lon of map center when user stops moving the map
-        map.on("moveend", function () {
-            var latLng = map.getCenter();
-            var boundingBox = map.getBounds();
-            $.get("http://mnbikeways.herokuapp.com/OSM/", {
-                'lat': latLng.lat,
-                'lon': latLng.lng,
-                'lat1': boundingBox.getSouthWest().lat,
-                'lon1': boundingBox.getSouthWest().lng
-            }, function (data) {
-                L.geoJson(data, {
-                    style: function (feature) {
-                        return {color: 'green'}
-                    }
-                }).addTo(map);
-            })
-
-        });
-
-        $.get("http://mnbikeways.herokuapp.com/NR/", function (data) {
+        $.get("http://localhost:8000/NR/", function (data) {
             L.geoJson(data, {
                 pointToLayer: function (feature, latlng) {
                     return L.circleMarker(latlng, {
