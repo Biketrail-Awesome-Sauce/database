@@ -91,6 +91,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATIC_ROOT = '/home/boydjohnson/statics'
+
+
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR,  'Data/HTML'),
     os.path.join(BASE_DIR, 'templates')
