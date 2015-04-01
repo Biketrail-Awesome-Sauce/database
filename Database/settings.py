@@ -26,7 +26,7 @@ DEBUG = False
 
 TEMPLATE_DEBUG = False
 
-ALLOWED_HOSTS = ['http://li957-59.members.linode.com/','127.0.0.1:8081']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
