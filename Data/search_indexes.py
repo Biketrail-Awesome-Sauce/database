@@ -11,6 +11,8 @@ class MinnesotaTrailsSearchable(indexes.SearchIndex, indexes.Indexable):
     chicago_algorithm = indexes.FloatField(model_attr='rtng_cbf7')
     cyclopath_algorithm = indexes.FloatField(model_attr='rtng_ccpx')
     user_rating = indexes.FloatField(model_attr='rtng_mean')
+    source = indexes.IntegerField(model_attr='source')
+    target = indexes.IntegerField(model_attr='target')
     geometry = indexes.LocationField(model_attr='get_location')
 
     #for autocomplete

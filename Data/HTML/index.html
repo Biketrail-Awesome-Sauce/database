@@ -36,7 +36,7 @@
             vertical-align: middle;
             padding: 10px 10px;
         }
-
+        [ng-click] {cursor:pointer;}
         #headerTitle {
             color: white;
             font-family: sans-serif;
@@ -115,6 +115,7 @@
             border: solid 1px maroon;
             padding: 2px 5px 2px 5px;
         }
+        .inline {display:inline;}
     </style>
 
 
@@ -140,20 +141,21 @@
     </div>
       </div>
     <div class="clearBoth"></div>
-      <div collapse="isSearchCollapsed" class="row">
+      <div collapse="isSearchCollapsed" class="row-fluid">
       <div class="col-xs-4">
 <input type="text" ng-model="asyncSelected" placeholder="Search biketrails" typeahead="address[0]+address[1] for address in getBiketrail($viewValue)" typeahead-on-select="onSelect($item,$model,$label)" class="form-control">
 </div>
 <div class="col-xs-6">
-<div ng-repeat="address in Selected">
-    <div class="row">
-    <div ng-bind="fromToArray[$index]"></div>
-    <div ng-bind="address[0]+address[1]"></div>
+    <div ng-if="Selected.length==2" ng-click="rearrange()" class="glyphicon glyphicon-sort"></div>
+<div class="inline" ng-repeat="address in Selected">
+    <div class="inline" ng-bind="fromToArray[$index]"></div>
+    <div class="inline" ng-bind="address[0]+address[1]"></div>
+    <div class="glyphicon glyphicon-remove" ng-click="removeSelected($index)"></div>
 
-    </div>
 
 </div>
-    <div ng-click="rearrange()" class="glyphicon glyphicon-sort"></div>
+    <div class="btn btn-primary" ng-if="Selected.length==2" ng-click="getRoute()"></div>
+
     </div>
   </div>
 
@@ -207,14 +209,24 @@
             if ($scope.Selected.length != 2) {
                 $scope.Selected.push($item);
             }
-        }
+        };
 
         $scope.rearrange = function () {
             var tmp = $scope.Selected[0];
             $scope.Selected[0] = $scope.Selected[$scope.Selected.length - 1];
             $scope.Selected[$scope.Selected.length - 1] = tmp;
 
-        }
+        };
+
+        $scope.removeSelected = function(i){
+            if($scope.Selected.length==2) {
+                $scope.Selected = $scope.Selected.splice(i-1, 1);
+            }else{
+                $scope.Selected.pop();
+            }
+        };
+
+
 
 
         function getGeoJson(position) {
@@ -323,6 +335,13 @@
             zoom: 16,
             layers: [Esri_WorldGrayCanvas]
         });
+
+        $scope.getRoute = function(){
+
+            $http.get('http://localhost:8000/router/',{params:{bid:$scope.Selected[0][2], eid:$scope.Selected[1][3]}}).success(function(data,status){
+                L.geoJson(data.geojson,{color:'blue'}).addTo(map);
+            });
+        };
 
         var baseMaps = {
             "All Roads": Esri_WorldGrayCanvas,

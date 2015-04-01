@@ -26,7 +26,7 @@ class SearchAjax(TemplateView):
         qs = SearchQuerySet().filter(content_auto=request.GET.get('q',"")).distance('geometry',Point(lng,lat,srid=4326)).order_by('distance')
         if len(qs)>6:
             qs = qs[:5]
-        json = [(q.content_auto," "+str(q.distance.m)+" meters") for q in qs]
+        json = [(q.content_auto," "+str(q.distance.m)+" meters",q.source,q.target) for q in qs]
         return HttpResponse(dumps(json),content_type="application/json")
 
 
@@ -58,7 +58,7 @@ class RouterAjax(View):
         for item in all:
             names.append(item[0])
             gj.append(loads(GEOSGeometry(item[1]).geojson))
-        return HttpResponse(dumps({'names':names,'geojson':gj}))
+        return HttpResponse(dumps({'names':names,'geojson':gj}),content_type="application/json; charset='utf-8'")
 
 
 class NiceRideAjax(View):
