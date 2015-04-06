@@ -47,7 +47,7 @@ class RouterAjax(View):
     def get(self, request, *args, **kwargs):
         id1 =  request.GET.get('bid')
         id2 = request.GET.get('eid')
-        sql_inside_of_function = "select id, source, target, cost from \"Data_minnesotabiketrails\"\'"
+        sql_inside_of_function = "select id, source, target, cost*(4-rtn_ccpx)*(4-rtn_mean)*(4-rtn_cbf7) as costly,costly*(case when one_way=0 then 1 else one_way)  from \"Data_minnesotabiketrails\"\'"
         sql_function = "select ccp_name, the_geom from pgr_dijkstra(\'"
 
         cursor = connection.cursor()
