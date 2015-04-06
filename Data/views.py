@@ -51,7 +51,7 @@ class RouterAjax(View):
         sql_function = "select ccp_name, the_geom from pgr_dijkstra(\'"
 
         cursor = connection.cursor()
-        cursor.execute(sql_function+sql_inside_of_function+","+str(id1)+","+str(id2)+", true,false) join \"Data_minnesotabiketrails\" as bt on bt.id=id2")
+        cursor.execute(sql_function+sql_inside_of_function+","+str(id1)+","+str(id2)+", true,true) join \"Data_minnesotabiketrails\" as bt on bt.id=id2")
         all = cursor.fetchall()
         names = []
         gj = []
