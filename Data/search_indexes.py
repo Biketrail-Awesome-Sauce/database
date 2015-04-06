@@ -2,7 +2,7 @@ __author__ = 'boyd'
 
 from haystack import indexes
 
-from Data.models import MinnesotaBikeTrails
+from Data.models import MinnesotaBikeTrails, Bikeintersections
 
 
 
@@ -21,6 +21,23 @@ class MinnesotaTrailsSearchable(indexes.SearchIndex, indexes.Indexable):
 
     def get_model(self):
         return MinnesotaBikeTrails
+
+    def index_queryset(self, using=None):
+        return self.get_model().objects.all()
+
+    def __str__(self):
+        return self.text
+
+class MinnesotaBikeIntersections(indexes.SearchIndex, indexes.Indexable):
+    text = indexes.CharField(document=True, use_template=True, model_attr='name',null=True)
+    source = indexes.IntegerField(model_attr='id')
+    target = indexes.IntegerField(model_attr='id')
+    geometry = indexes.LocationField(model_attr='the_geom')
+
+    content_auto = indexes.EdgeNgramField(model_attr='name',null=True)
+
+    def get_model(self):
+        return Bikeintersections
 
     def index_queryset(self, using=None):
         return self.get_model().objects.all()
