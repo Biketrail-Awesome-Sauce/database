@@ -1,7 +1,7 @@
-
 from __future__ import unicode_literals
 
 from django.contrib.gis.db import models
+from django.contrib.gis.geos import GEOSGeometry
 
 
 class BestBikeTrails(models.Model):
@@ -73,6 +73,9 @@ class MinnesotaBikeTrails(models.Model):
     cost = models.FloatField()
     the_geom = models.LineStringField()
     objects = models.GeoManager()
+
+    def get_location(self):
+        return GEOSGeometry(self.the_geom).centroid
 
     class Meta:
         managed = False
