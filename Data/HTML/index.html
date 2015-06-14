@@ -6,18 +6,19 @@
 
     <title>MNBikeways | A Geo:Code App</title>
 
-    <link rel="shortcut icon" type="images/x-icon" href="static/static/favicon.ico">
+    <link rel="shortcut icon" type="images/x-icon" href="static/favicon.ico">
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7/leaflet.css"/>
     <link href='https://api.tiles.mapbox.com/mapbox.js/v1.6.4/mapbox.css' rel='stylesheet'/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
     <script src='https://api.tiles.mapbox.com/mapbox.js/v1.6.4/mapbox.js'></script>
 
 
-    <script src="static/static/ui-bootstrap-tpls-0.12.1.min.js"></script>
-    <script src="static/static/angular-leaflet-directive.min.js"></script>
+    <script src="static/ui-bootstrap-tpls-0.12.1.min.js"></script>
+    <script src="static/angular-leaflet-directive.min.js"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -51,7 +52,7 @@
             float: left;
             height: 25px;
             width: 25px;
-            background-image: url(static/static/hamburger.png);
+            background-image: url(static/hamburger.png);
             background-size: 25px 25px;
             background-repeat: no-repeat;
         }
@@ -86,7 +87,7 @@
             margin-left: 10px;
             height: 25px;
             width: 41px;
-            background-image: url(static/static/bicycle.png);
+            background-image: url(static/bicycle.png);
             background-size: 41px 25px;
             background-repeat: no-repeat;
         }
@@ -137,7 +138,7 @@
     <div id="logo"></div>
     <div id="headerTitle">MNBikeways</div>
     <div id="search">
-      <img ng-click="isSearchCollapsed=!isSearchCollapsed" src="static/static/search.png" alt="Search Icon" class="searchImage" />
+      <img ng-click="isSearchCollapsed=!isSearchCollapsed" src="static/search.png" alt="Search Icon" class="searchImage" />
     </div>
       </div>
     <div class="clearBoth"></div>
@@ -189,7 +190,7 @@
         $scope.isSearchCollapsed = true;
 
         $scope.getBiketrail = function (val) {
-            return $http.get('http://li957-59.members.linode.com/searchAjax/', {
+            return $http.get('http://localhost:8000/searchAjax/', {
                 params: {
                     q: val,
                     lat: latitude,
@@ -235,7 +236,7 @@
 
             lat = position.coords.latitude;
             lng = position.coords.longitude;
-            $http.get("http://li957-59.members.linode.com/geoJson/", {'lat1': lat, 'lng1': lng}).success(function (data, status) {
+            $http.get("http://localhost:8000/geoJson/", {'lat1': lat, 'lng1': lng}).success(function (data, status) {
                 angular.extend($scope, {
                     geojson: {
                         data: data,
@@ -340,7 +341,7 @@
 
         $scope.getRoute = function(){
 
-            $http.get('http://li957-59.members.linode.com/router/',{params:{bid:$scope.Selected[0][2], eid:$scope.Selected[1][3]}}).success(function(data,status){
+            $http.get('http://localhost:8000/router/',{params:{bid:$scope.Selected[0][2], eid:$scope.Selected[1][3]}}).success(function(data,status){
                 L.geoJson(data.geojson,{color:'blue'}).addTo(map);
             });
         };
@@ -349,11 +350,11 @@
             "All Roads": Esri_WorldGrayCanvas,
             "NatGeo": Esri_NatGeoWorldMap,
             "Some Roads": Acetate_roads,
-            "Clear Roads": Acetate_basemap,
+            "Clear Roads": Acetate_basemap
         };
 
         var overlayMaps = {
-            "Fixit Stations": fixitLayer,
+            "Fixit Stations": fixitLayer
         };
 
         L.control.layers(baseMaps, overlayMaps).addTo(map);
@@ -362,7 +363,7 @@
         L.marker([latitude, longitude]).bindPopup("You").addTo(map);
 
 
-        $.get("http://li957-59.members.linode.com/NR/", function (data) {
+        $.get("http://localhost:8000/NR/", function (data) {
             L.geoJson(data, {
                 pointToLayer: function (feature, latlng) {
                     return L.circleMarker(latlng, {
@@ -397,7 +398,7 @@
 
 </script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
 </body>

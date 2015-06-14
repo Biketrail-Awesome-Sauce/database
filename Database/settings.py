@@ -22,9 +22,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = '&q@u2!&-&lz0m7)*%n)l8!gytym-2_3$ze27zthq+5))-hn=ow'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-TEMPLATE_DEBUG = False
+TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -91,7 +91,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = '/home/boydjohnson/statics'
+STATIC_ROOT = BASE_DIR
 
 
 TEMPLATE_DIRS = (
@@ -100,7 +100,8 @@ TEMPLATE_DIRS = (
 )
 
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'Data/javascript'),
-os.path.join(BASE_DIR,'Data/images'))
+                    os.path.join(BASE_DIR,'Data/images'),
+                    )
 
 #haystack search settings
 
