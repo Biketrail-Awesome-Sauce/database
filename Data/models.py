@@ -30,7 +30,7 @@ class BestBikeTrails(models.Model):
     objects = models.GeoManager()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'Data_bestbiketrails'
 
 
@@ -45,7 +45,7 @@ class Bikeintersections(models.Model):
     objects = models.GeoManager()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'Data_bikeintersections'
 
 
@@ -78,7 +78,7 @@ class MinnesotaBikeTrails(models.Model):
         return GEOSGeometry(self.the_geom).centroid
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'Data_minnesotabiketrails'
 
 
