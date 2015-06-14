@@ -38,8 +38,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.gis',#geodjango
-    'haystack',#search capability
+    'django.contrib.gis',  #geodjango
+    'haystack',  #search capability
     'Data',
 )
 
@@ -65,10 +65,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': dbName,
-        'USER' : dbUser,
-        'PASSWORD' : dbPassword,
-        'HOST' : '127.0.0.1',
-        'PORT' : '5432',
+        'USER': dbUser,
+        'PASSWORD': dbPassword,
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
 
