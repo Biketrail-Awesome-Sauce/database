@@ -26,7 +26,7 @@ class SearchAjax(TemplateView):
         qs = SearchQuerySet().filter(content_auto=request.GET.get('q',"")).distance('geometry',Point(lng,lat,srid=4326)).order_by('distance')
         if len(qs)>6:
             qs = qs[:5]
-        json = [(q.content_auto," "+("%.2f" % (q.distance.m if q.distance.m<1000 else q.distance.mi))+(" meters" if q.distance.m<1000 else " miles"),q.source,q.target,q.geometry.geojson) for q in qs]
+        json = [(q.content_auto," "+("%.2f" % (q.distance.m if q.distance.m<1000 else q.distance.mi))+(" meters" if q.distance.m<1000 else " miles"),q.source,q.target,GEOSGeometry(q.geometry).geojson) for q in qs]
         return HttpResponse(dumps(json),content_type="application/json")
 
 
