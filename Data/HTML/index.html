@@ -232,44 +232,10 @@
 
 
 
-        function getGeoJson(position) {
-
-            lat = position.coords.latitude;
-            lng = position.coords.longitude;
-            $http.get("http://localhost:8000/geoJson/", {'lat1': lat, 'lng1': lng}).success(function (data, status) {
-                angular.extend($scope, {
-                    geojson: {
-                        data: data,
-                        style: {color: 'green'}
-                    }
-
-                });
-            });
-
-        }
 
 
-        //Get User Location
-        function getLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition);
-            }
-            else {
-                $('#error').html("We were not able to get your location.");
-                $('#error').show();
-            }
-        }
 
 
-        function showPosition(position) {
-            getGeoJson(position);
-
-            latitude = position.coords.latitude;
-            longitude = position.coords.longitude;
-            $('#location').html("Your Location: <b>Latitude:</b> " + latitude + " <b>Longitude:</b> " + longitude);
-            $('#location').hide();
-            loadLeaflet(latitude, longitude);
-        }
 
         //Leaflet Scipt
         function loadLeaflet(lat, long) {
@@ -333,7 +299,7 @@
                     L.marker([45.05771344221184, -92.8063952922821], {icon: fixitIcon}).bindPopup("River Market Coop"),
                 ]);
 
-        var map = L.map('map', {
+       window.map = L.map('map', {
             center: [latitude, longitude],
             zoom: 16,
             layers: [Esri_WorldGrayCanvas]
@@ -384,6 +350,37 @@
         });
 
     }
+
+        function getGeoJson(position) {
+
+            $http.get("http://localhost:8000/geoJson/", {'lat1': position.coords.latitude, 'lng1': position.coords.longitude}).success(function (data, status) {
+                L.geoJson(data,style={color:'green'}).addTo(map);
+            });
+
+        }
+
+        //Get User Location
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            }
+            else {
+                $('#error').html("We were not able to get your location.");
+                $('#error').show();
+            }
+        }
+
+
+        function showPosition(position) {
+            getGeoJson(position);
+
+            latitude = position.coords.latitude;
+            longitude = position.coords.longitude;
+            $('#location').html("Your Location: <b>Latitude:</b> " + latitude + " <b>Longitude:</b> " + longitude);
+            $('#location').hide();
+            loadLeaflet(latitude, longitude);
+        }
+
     getLocation();
         });
 
