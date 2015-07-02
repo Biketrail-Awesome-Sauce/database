@@ -47,7 +47,7 @@ class RouterAjax(View):
     def get(self, request, *args, **kwargs):
         id1 =  request.GET.get('bid')
         id2 = request.GET.get('eid')
-        sql_inside_of_function = "select id, source, target, cost * (4-rtng_ccpx) * (4-rtng_mean) * (4-rtng_cbf7) as cost,cost * (4-rtng_ccpx)*(4-rtng_mean)*(4-rtng_cbf7) * case when one_way=0 then 1 else one_way END as reverse_cost from \"Data_minnesotabiketrails\"\'"
+        sql_inside_of_function = "select id, source, target, cost * (4-rtng_ccpx) * (4-rtng_mean) * (4-rtng_cbf7)+case when one_way=-1 then 1000000 else 0 END as cost,cost * (4-rtng_ccpx)*(4-rtng_mean)*(4-rtng_cbf7) + case when one_way=1 then 1000000 else 0 END as reverse_cost from \"Data_minnesotabiketrails\"\'"
         sql_function = "select ccp_name, the_geom from pgr_dijkstra(\'"
 
         cursor = connection.cursor()
