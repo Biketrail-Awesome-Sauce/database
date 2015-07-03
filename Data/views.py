@@ -48,7 +48,7 @@ class RouterAjax(View):
         id1 =  request.GET.get('bid')
         id2 = request.GET.get('eid')
         sql_inside_of_function = "select id, source, target, cost * (4-rtng_ccpx) * (4-rtng_mean) * (4-rtng_cbf7)+case when one_way=-1 then 1000000 else 0 END as cost,cost * (4-rtng_ccpx)*(4-rtng_mean)*(4-rtng_cbf7) + case when one_way=1 then 1000000 else 0 END as reverse_cost from \"Data_minnesotabiketrails\"\'"
-        sql_function = "select ccp_name, the_geom from pgr_dijkstra(\'"
+        sql_function = "select ccp_name, the_geom, cost from pgr_dijkstra(\'"
 
         cursor = connection.cursor()
         cursor.execute(sql_function+sql_inside_of_function+", %s , %s , true,true) join \"Data_minnesotabiketrails\" as bt on bt.id=id2",(str(id1),str(id2),))
@@ -56,9 +56,19 @@ class RouterAjax(View):
         names = []
         gj = []
         for item in all:
-            names.append(item[0])
+            names.append((item[0],item[2]))
             gj.append(loads(GEOSGeometry(item[1]).geojson))
-        return HttpResponse(dumps({'names':names,'geojson':gj}),content_type="application/json; charset='utf-8'")
+        previous_name = ''
+        sent_names = []
+        dist_on_path = 0
+        for n in names:
+            if n[0]==previous_name:
+                dist_on_path +=n[1]
+            else:
+                sent_names.append((previous_name,dist_on_path))
+                dist_on_path=0
+                previous_name = n[0]
+        return HttpResponse(dumps({'names':sent_names, 'geojson':gj}), content_type="application/json; charset='utf-8'")
 
 
 class NiceRideAjax(View):
