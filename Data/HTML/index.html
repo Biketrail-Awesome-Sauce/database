@@ -351,9 +351,9 @@
 
     }
 
-        function getGeoJson(position) {
+        function getGeoJson(lat,lon) {
 
-            $http.get("/geoJson/", {'lat1': position.coords.latitude, 'lng1': position.coords.longitude}).success(function (data, status) {
+            $http.get("/geoJson/", {params:{lat1: lat, lng1: lon}}).success(function (data, status) {
                 L.geoJson(data,style={color:'green'}).addTo(map);
             });
 
@@ -372,10 +372,11 @@
 
 
         function showPosition(position) {
-            getGeoJson(position);
-
             latitude = position.coords.latitude;
             longitude = position.coords.longitude;
+            getGeoJson(latitude, longitude);
+
+
             $('#location').html("Your Location: <b>Latitude:</b> " + latitude + " <b>Longitude:</b> " + longitude);
             $('#location').hide();
             loadLeaflet(latitude, longitude);
