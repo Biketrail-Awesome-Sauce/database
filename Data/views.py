@@ -59,15 +59,17 @@ class RouterAjax(View):
         for item in all:
             names.append((item[0],item[2]))
             gj.append(loads(GEOSGeometry(item[1]).geojson))
-        previous_name = ''
+        previous_name = 'as;dknfiowienfkdoasndf' #needs to be something it won't be; it could be empty string
         sent_names = []
         dist_on_path = 0
-        for n in names:
+        for i,n in enumerate(names):
+            if i==0:
+                previous_name=n[0]
             if n[0]==previous_name:
                 dist_on_path +=n[1]
             else:
-                sent_names.append((previous_name,dist_on_path))
-                dist_on_path=0
+                sent_names.append((previous_name,"%.2f" % dist_on_path))
+                dist_on_path=n[1]
                 previous_name = n[0]
         return HttpResponse(dumps({'names':sent_names, 'geojson':gj}), content_type="application/json; charset='utf-8'")
 
