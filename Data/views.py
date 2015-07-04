@@ -38,8 +38,9 @@ class GeoJsonAjax(View):
         qs = BestBikeTrails.objects.filter(the_geom__distance_lte=(Point(lng,lat,srid=4326),D(mi=2)))
         gj = []
         for item in qs:
-            poly = GEOSGeometry(item.the_geom,srid=4326)
-            gj.append(loads(poly.geojson))
+            poly = loads(GEOSGeometry(item.the_geom,srid=4326).geojson)
+            poly['properties'] = {'name': item.ccp_name}
+            gj.append(poly)
         return HttpResponse(dumps(gj),content_type="application/json")
 
 

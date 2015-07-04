@@ -366,7 +366,16 @@
         function getGeoJson(lat,lon) {
 
             $http.get("/geoJson/", {params:{lat1: lat, lng1: lon}}).success(function (data, status) {
-                L.geoJson(data,style={color:'green'}).addTo(map);
+                L.geoJson(data,{style:{color:'green'},onEachFeature: function(feature, layer){
+                   layer.bindPopup(feature.properties.name);
+                   layer.on({
+                       click:function(){layer.openPopup();},
+                        mouseover:function(){layer.openPopup();},
+                       mouseout:function(){layer.closePopup();},
+               });
+                }}).addTo(map);
+
+
             });
 
         }
