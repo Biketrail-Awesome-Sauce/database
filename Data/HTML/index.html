@@ -231,6 +231,8 @@
             if ($scope.Selected.length == 2) {
                 if (routed) {
                     window.map.removeLayer(route);
+                    $('#route_names').children().remove();
+                    $('#map').removeClass('col-md-9');
                     routed = false;
                 }
                 $scope.Selected = $scope.Selected.splice(i - 1, 1);

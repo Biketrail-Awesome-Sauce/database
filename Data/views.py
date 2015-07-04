@@ -63,11 +63,12 @@ class RouterAjax(View):
         sent_names = []
         dist_on_path = 0
         for i,n in enumerate(names):
-            if i==0:
-                previous_name=n[0]
             if n[0]==previous_name:
                 dist_on_path +=n[1]
             else:
+                if i==0:
+                    previous_name=n[0]
+                    dist_on_path+=n[1]
                 sent_names.append((previous_name,"%.2f" % dist_on_path))
                 dist_on_path=n[1]
                 previous_name = n[0]
