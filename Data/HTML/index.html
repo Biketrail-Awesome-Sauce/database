@@ -155,7 +155,7 @@
 
 
 </div>
-    <div class="btn btn-primary col-md-9 col-lg-6" ng-if="Selected.length==2" ng-click="getRoute()">Get Route</div>
+    <div class="btn btn-primary col-md-9 col-lg-6 pull-right" ng-if="Selected.length==2" ng-click="getRoute()">Get Route</div>
 
     </div>
   </div>
@@ -220,9 +220,13 @@
             $scope.Selected[$scope.Selected.length - 1] = tmp;
 
         };
-
+        var routed=false;
         $scope.removeSelected = function(i){
             if($scope.Selected.length==2) {
+                if(routed) {
+                    window.map.removeLayer(route);
+                    routed=false;
+                }
                 $scope.Selected = $scope.Selected.splice(i-1, 1);
             }else{
                 $scope.Selected.pop();
@@ -306,10 +310,18 @@
         });
 
         $scope.getRoute = function(){
-
-            $http.get('/router/',{params:{bid:$scope.Selected[0][2], eid:$scope.Selected[1][3]}}).success(function(data,status){
-                L.geoJson(data.geojson,{color:'blue'}).addTo(map);
-            });
+            if(!routed) {
+                routed = true;
+                $http.get('/router/', {
+                    params: {
+                        bid: $scope.Selected[0][2],
+                        eid: $scope.Selected[1][3]
+                    }
+                }).success(function (data, status) {
+                    route = L.geoJson(data.geojson, {color: 'blue'});
+                    map.addLayer(route);
+                });
+            }
         };
 
         var baseMaps = {
