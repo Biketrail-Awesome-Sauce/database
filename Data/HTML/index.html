@@ -143,19 +143,19 @@
       </div>
     <div class="clearBoth"></div>
       <div collapse="isSearchCollapsed" class="row-fluid">
-      <div class="col-xs-4">
+      <div class="col-md-4">
 <input type="text" ng-model="asyncSelected" placeholder="Search biketrails" typeahead="address[0]+address[1] for address in getBiketrail($viewValue)" typeahead-on-select="onSelect($item,$model,$label)" class="form-control">
 </div>
-<div class="col-xs-6">
-    <div ng-if="Selected.length==2" ng-click="rearrange()" class="glyphicon glyphicon-sort"></div>
-<div class="inline" ng-repeat="address in Selected">
+<div class="col-md-8 row">
+    <div ng-if="Selected.length==2" ng-click="rearrange()" style="font-size:25px" class="col-md-1 glyphicon glyphicon-sort"></div>
+<div class="col-md-5" style="border: solid 1px black;border-radius:10px;" ng-repeat="address in Selected">
     <div class="inline" ng-bind="fromToArray[$index]"></div>
     <div class="inline" ng-bind="address[0]+address[1]"></div>
-    <div class="glyphicon glyphicon-remove" ng-click="removeSelected($index)"></div>
+    <div class="glyphicon glyphicon-remove inline" style="font-size:20px" ng-click="removeSelected($index)"></div>
 
 
 </div>
-    <div class="btn btn-primary" ng-if="Selected.length==2" ng-click="getRoute()">Get Route</div>
+    <div class="btn btn-primary col-md-9 col-lg-6" ng-if="Selected.length==2" ng-click="getRoute()">Get Route</div>
 
     </div>
   </div>
