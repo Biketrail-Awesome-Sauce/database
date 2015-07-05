@@ -131,51 +131,58 @@
 <div id="error">Error Test</div>
 
 <div id="location">Loading your location...</div>
-<div id="header">
-    <div id="hamburger"></div>
-    <div id="menu">
-        <ul>
-            <li>FixIt Stations</li>
-            <li>NiceRide Stations</li>
-            <li>About</li>
-        </ul>
+<div class="container-fluid">
+    <div class="row">
+        <div id="header" class="col-md-12">
+            <div id="hamburger"></div>
+            <div id="menu">
+                <ul>
+                    <li>FixIt Stations</li>
+                    <li>NiceRide Stations</li>
+                    <li>About</li>
+                </ul>
+            </div>
+            <div id="logo"></div>
+            <div id="headerTitle">MNBikeways</div>
+            <div id="search">
+                <img ng-click="isSearchCollapsed=!isSearchCollapsed" src="/static/search.png" alt="Search Icon"
+                     class="searchImage"/>
+            </div>
+        </div>
     </div>
-    <div id="logo"></div>
-    <div id="headerTitle">MNBikeways</div>
-    <div id="search">
-        <img ng-click="isSearchCollapsed=!isSearchCollapsed" src="/static/search.png" alt="Search Icon"
-             class="searchImage"/>
-    </div>
-</div>
-<div class="clearBoth"></div>
-<div collapse="isSearchCollapsed" class="row-fluid">
-    <div class="col-md-4">
-        <input type="text" ng-model="asyncSelected" placeholder="Search biketrails"
-               typeahead="address[0]+address[1] for address in getBiketrail($viewValue)"
-               typeahead-on-select="onSelect($item,$model,$label)" class="form-control">
-    </div>
-    <div class="col-md-8 row">
-        <div ng-if="Selected.length==2" ng-click="rearrange()" style="font-size:25px"
-             class="col-md-1 glyphicon glyphicon-sort"></div>
-        <div class="col-md-5" style="border: solid 1px black;border-radius:10px;" ng-repeat="address in Selected">
-            <div class="inline" ng-bind="fromToArray[$index]"></div>
-            <div class="inline" ng-bind="address[0]+address[1]"></div>
-            <div class="glyphicon glyphicon-remove inline" style="font-size:20px"
-                 ng-click="removeSelected($index)"></div>
+    <div class="clearBoth"></div>
+    <div collapse="isSearchCollapsed" class="row-fluid">
+        <div class="col-md-4">
+            <input type="text" ng-model="asyncSelected" placeholder="Search biketrails"
+                   typeahead="address[0]+address[1] for address in getBiketrail($viewValue)"
+                   typeahead-on-select="onSelect($item,$model,$label)" class="form-control">
+        </div>
+        <div class="col-md-8 row">
+            <div ng-if="Selected.length==2" ng-click="rearrange()" style="font-size:25px"
+                 class="col-md-1 glyphicon glyphicon-sort"></div>
+            <div class="col-md-5" style="border: solid 1px black;border-radius:10px;"
+                 ng-repeat="address in Selected">
+                <div class="inline" ng-bind="fromToArray[$index]"></div>
+                <div class="inline" ng-bind="address[0]+address[1]"></div>
+                <div class="glyphicon glyphicon-remove inline" style="font-size:20px"
+                     ng-click="removeSelected($index)"></div>
 
+
+            </div>
+            <div class="btn btn-primary col-sm-6 pull-right" ng-if="Selected.length==2" ng-click="getRoute()">Get
+                Route
+            </div>
 
         </div>
-        <div class="btn btn-primary col-sm-6 pull-right" ng-if="Selected.length==2" ng-click="getRoute()">Get Route
-        </div>
-
     </div>
+
 </div>
 <div class="container-fluid">
-<div class="row">
-    <div id="map" class="col-md-12"></div>
+    <div class="row">
+        <div id="map" class="col-md-12"></div>
 
-    <div id="route_names" class="col-md-3"></div>
-</div>
+        <div id="route_names" class="col-md-3"></div>
+    </div>
 </div>
 
 <script type="text/javascript">
@@ -322,9 +329,9 @@
                         $('#map').addClass("col-md-9");
                         route = L.geoJson(data.geojson, {color: 'blue'});
                         $("#route_names").append("<table class='table table-bordered'><thead><tr><th class='col-md-6'>Path</th><th class='col-md-6'>Distance</th></thead><tbody id='tbody_names'></tbody></table>")
-                        for(var i=0;i<data.names.length;i++){
+                        for (var i = 0; i < data.names.length; i++) {
 
-                            $('#tbody_names').append("<tr><td>"+data.names[i][0]+"</td><td>"+data.names[i][1]+" meters</td></tr>");
+                            $('#tbody_names').append("<tr><td>" + data.names[i][0] + "</td><td>" + data.names[i][1] + " meters</td></tr>");
                         }
                         map.addLayer(route);
                     });
