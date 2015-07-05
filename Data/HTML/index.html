@@ -347,6 +347,7 @@
                             $('#tbody_names').append("<tr><td>" + data.names[i][0] + "</td><td>" + data.names[i][1] + " meters</td></tr>");
                         }
                         map.addLayer(route);
+                        map.fitBounds(data.extent)
                     });
                 }
             };

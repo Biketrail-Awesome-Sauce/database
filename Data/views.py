@@ -4,7 +4,7 @@ from haystack.query import SearchQuerySet
 from haystack.utils.geo import Point
 from django.http import HttpResponse
 from django.contrib.gis.measure import D
-from django.contrib.gis.geos import GEOSGeometry
+from django.contrib.gis.geos import GEOSGeometry, MultiLineString
 from django.db import connection
 
 from Data.models import BestBikeTrails, MinnesotaBikeTrails
@@ -12,7 +12,7 @@ from Data.models import BestBikeTrails, MinnesotaBikeTrails
 from requests import get
 import xml.etree.ElementTree as ET
 from json import dumps, loads
-
+from geojson import dumps as geoDumps
 
 class MainPage(TemplateView):
     def get(self, request, *args, **kwargs):
@@ -58,11 +58,14 @@ class RouterAjax(View):
         gj = []
         for item in all:
             names.append((item[0],item[2]))
-            poly = loads(GEOSGeometry(item[1]).geojson)
+            poly = loads(GEOSGeometry(item[1], srid=4326).geojson)
             poly['properties'] = {'name':item[0]}
             gj.append(poly)
+        #this creates a list of linestrings and then makes a Multilinestring and gets the extent
+        geo = [GEOSGeometry(geoDumps(po)) for po in gj]
+        extent = MultiLineString(*geo).extent
+        extent = [[extent[1],extent[0]],[extent[3],extent[2]]]
         #next is getting the distance on each same named trail section
-        previous_name = 'as;dknfiowienfkdoasndf' #needs to be something it won't be; it could be empty string
         sent_names = []
         dist_on_path = 0
         for i,n in enumerate(names):
@@ -77,7 +80,7 @@ class RouterAjax(View):
             if i==len(names)-1:
                     sent_names.append((previous_name, "%.2f" % dist_on_path))
 
-        return HttpResponse(dumps({'names':sent_names, 'geojson':gj}), content_type="application/json; charset='utf-8'")
+        return HttpResponse(dumps({'names':sent_names, 'geojson':gj, 'extent':extent}), content_type="application/json; charset='utf-8'")
 
 
 class NiceRideAjax(View):
