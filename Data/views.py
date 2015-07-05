@@ -58,7 +58,10 @@ class RouterAjax(View):
         gj = []
         for item in all:
             names.append((item[0],item[2]))
-            gj.append(loads(GEOSGeometry(item[1]).geojson))
+            poly = loads(GEOSGeometry(item[1]).geojson)
+            poly['properties'] = {'name':item[0]}
+            gj.append(poly)
+        #next is getting the distance on each same named trail section
         previous_name = 'as;dknfiowienfkdoasndf' #needs to be something it won't be; it could be empty string
         sent_names = []
         dist_on_path = 0

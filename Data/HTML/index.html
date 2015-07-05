@@ -327,7 +327,20 @@
                         }
                     }).success(function (data, status) {
                         $('#map').addClass("col-md-9");
-                        route = L.geoJson(data.geojson, {color: 'blue'});
+                        route = L.geoJson(data.geojson, {style:{color: 'blue'},onEachFeature: function (feature, layer) {
+                            layer.bindPopup(feature.properties.name);
+                            layer.on({
+                                click: function () {
+                                    layer.openPopup();
+                                },
+                                mouseover: function () {
+                                    layer.openPopup();
+                                },
+                                mouseout: function () {
+                                    layer.closePopup();
+                                }
+                            });
+                        }});
                         $("#route_names").append("<table class='table table-bordered'><thead><tr><th class='col-md-6'>Path</th><th class='col-md-6'>Distance</th></thead><tbody id='tbody_names'></tbody></table>")
                         for (var i = 0; i < data.names.length; i++) {
 
