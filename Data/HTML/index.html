@@ -328,7 +328,7 @@
                     }).success(function (data, status) {
                         $('#map').addClass("col-md-9");
                         route = L.geoJson(data.geojson, {style:{color: 'blue'},onEachFeature: function (feature, layer) {
-                            layer.bindPopup(feature.properties.name);
+                            layer.bindPopup("<h3>"+feature.properties.name+"</h3><ul><li>"+feature.properties.tag+"</li></ul>");
                             layer.on({
                                 click: function () {
                                     layer.openPopup();
@@ -382,7 +382,7 @@
                         });
                     },
                     onEachFeature: function (feature, layer) {
-                        layer.bindPopup(" <ul>" + " <li>" + feature.properties.name + "  </li>" + "  <li>Number of Bikes: " + feature.properties.nbBikes + "</li>"
+                        layer.bindPopup("<h3>"+feature.properties.name+"</h3><ul><li>Number of Bikes: " + feature.properties.nbBikes + "</li>"
                                 + "  <li>Empty Docks: " + feature.properties.nbEmptyDocks + "</li></ul>")
 
                     }
@@ -396,7 +396,7 @@
             $http.get("/geoJson/", {params: {lat1: lat, lng1: lon}}).success(function (data, status) {
                 L.geoJson(data, {
                     style: {color: 'green'}, onEachFeature: function (feature, layer) {
-                        layer.bindPopup(feature.properties.name);
+                        layer.bindPopup('<h3>'+feature.properties.name+'</h3><ul><li>'+feature.properties.tag+'</li></ul>');
                         layer.on({
                             click: function () {
                                 layer.openPopup();

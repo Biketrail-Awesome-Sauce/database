@@ -39,7 +39,7 @@ class GeoJsonAjax(View):
         gj = []
         for item in qs:
             poly = loads(GEOSGeometry(item.the_geom,srid=4326).geojson)
-            poly['properties'] = {'name': item.ccp_name}
+            poly['properties'] = {'name': item.ccp_name, 'tag': item.item_tags}
             gj.append(poly)
         return HttpResponse(dumps(gj),content_type="application/json")
 
@@ -49,7 +49,7 @@ class RouterAjax(View):
         id1 =  request.GET.get('bid')
         id2 = request.GET.get('eid')
         sql_inside_of_function = "select id, source, target, cost * (4-rtng_ccpx) * (4-rtng_mean) * (4-rtng_cbf7)+case when one_way=-1 then 1000000 else 0 END as cost,cost * (4-rtng_ccpx)*(4-rtng_mean)*(4-rtng_cbf7) + case when one_way=1 then 1000000 else 0 END as reverse_cost from \"Data_minnesotabiketrails\"\'"
-        sql_function = "select ccp_name, the_geom, bt.cost from pgr_dijkstra(\'"
+        sql_function = "select ccp_name, the_geom, bt.cost, bt.item_tags from pgr_dijkstra(\'"
 
         cursor = connection.cursor()
         cursor.execute(sql_function+sql_inside_of_function+", %s , %s , true,true) join \"Data_minnesotabiketrails\" as bt on bt.id=id2",(str(id1),str(id2),))
@@ -59,7 +59,7 @@ class RouterAjax(View):
         for item in all:
             names.append((item[0],item[2]))
             poly = loads(GEOSGeometry(item[1], srid=4326).geojson)
-            poly['properties'] = {'name':item[0]}
+            poly['properties'] = {'name':item[0], 'tag':item[3]}
             gj.append(poly)
         #this creates a list of linestrings and then makes a Multilinestring and gets the extent
         geo = [GEOSGeometry(geoDumps(po)) for po in gj]
