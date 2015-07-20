@@ -154,7 +154,7 @@
     <div collapse="isSearchCollapsed" class="row-fluid">
         <div class="col-md-4">
             <input type="text" ng-model="asyncSelected" placeholder="Search biketrails"
-                   typeahead="address[0]+address[1] for address in getBiketrail($viewValue)"
+                   typeahead="address.name for address in getBiketrail($viewValue)"
                    typeahead-on-select="onSelect($item,$model,$label)" class="form-control">
         </div>
         <div class="col-md-8 row">
@@ -163,7 +163,7 @@
             <div class="col-md-5" style="border: solid 1px black;border-radius:10px;"
                  ng-repeat="address in Selected">
                 <div class="inline" ng-bind="fromToArray[$index]"></div>
-                <div class="inline" ng-bind="address[0]+address[1]"></div>
+                <div class="inline" ng-bind="address.name"></div>
                 <div class="glyphicon glyphicon-remove inline" style="font-size:20px"
                      ng-click="removeSelected($index)"></div>
 
@@ -223,7 +223,9 @@
 
         $scope.onSelect = function ($item, $model, $label) {
             if ($scope.Selected.length != 2) {
+
                 $scope.Selected.push($item);
+
             }
         };
 

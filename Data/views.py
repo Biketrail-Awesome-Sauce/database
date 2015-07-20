@@ -23,10 +23,15 @@ class SearchAjax(TemplateView):
     def get(self, request, *args, **kwargs):
         lat = float(request.GET.get('lat',''))
         lng = float(request.GET.get('lng',''))
-        qs = SearchQuerySet().filter(content_auto=request.GET.get('q',"")).distance('geometry',Point(lng,lat,srid=4326)).order_by('distance')
+        qs = SearchQuerySet().filter(content_auto=request.GET.get('q','')).distance('geometry',Point(lng,lat,srid=4326)).order_by('distance')
         if len(qs)>6:
             qs = qs[:5]
-        json = [(q.content_auto," "+("%.2f" % (q.distance.m if q.distance.m<1000 else q.distance.mi))+(" meters" if q.distance.m<1000 else " miles"),q.source,q.target,GEOSGeometry(q.geometry).coords[1], GEOSGeometry(q.geometry).coords[0]) for q in qs]
+        if len(qs)==0:
+            r = get('http://localhost:8080/', params={'q':request.GET.get('q',''), 'format':'json'})
+            if r.ok:
+                json = [{'name':t['display_name']+' '+t['type'],'lon':t['lon'], 'lat':t['lat']} for t in r.json()]
+        else:
+            json = [{'name':q.content_auto+" "+"%.2f" % q.distance.m if q.distance.m<1000 else q.distance.mi+" meters" if q.distance.m<1000 else " miles",'source': q.source,'target': q.target,'lat': GEOSGeometry(q.geometry).coords[1],'lon': GEOSGeometry(q.geometry).coords[0]} for q in qs]
         return HttpResponse(dumps(json),content_type="application/json")
 
 
