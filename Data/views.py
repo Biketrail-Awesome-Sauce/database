@@ -31,7 +31,7 @@ class SearchAjax(TemplateView):
             if r.ok:
                 json = [{'name':t['display_name']+' '+t['type'],'lon':t['lon'], 'lat':t['lat']} for t in r.json()]
         else:
-            json = [{'name':q.content_auto+" "+"%.2f" % q.distance.m if q.distance.m<1000 else q.distance.mi+" meters" if q.distance.m<1000 else " miles",'source': q.source,'target': q.target,'lat': GEOSGeometry(q.geometry).coords[1],'lon': GEOSGeometry(q.geometry).coords[0]} for q in qs]
+            json = [{'name':q.content_auto+" "+"%.2f" % (q.distance.m if q.distance.m<1000 else q.distance.mi)+(" meters" if q.distance.m<1000 else " miles"),'source': q.source,'target': q.target,'lat': GEOSGeometry(q.geometry).coords[1],'lon': GEOSGeometry(q.geometry).coords[0]} for q in qs]
         return HttpResponse(dumps(json),content_type="application/json")
 
 
