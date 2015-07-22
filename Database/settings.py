@@ -41,7 +41,7 @@ INSTALLED_APPS = (
     'django.contrib.gis',  #geodjango
     'haystack',  #search capability
     'Data',
-    'analytical',
+
 )
 
 MIDDLEWARE_CLASSES = (
