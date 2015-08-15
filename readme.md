@@ -33,6 +33,11 @@ on setting things up.
 * dbPassword=YOUR_PASSWORD
 * Place this file at root of project
 
+###:sparkles:Get Python requirements
+- When you installed python earlier you should have gotten Pip, the python package manager
+* so pip install -r requirements.txt
+* The requirements.txt file is in the root directory
+
 ###Load the database with data
 * from the root of this project run:
 * python manage.py migrate
