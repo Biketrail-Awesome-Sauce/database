@@ -324,8 +324,8 @@
                     routed = true;
                     $http.get('/router/', {
                         params: {
-                            bid: $scope.Selected[0][2],
-                            eid: $scope.Selected[1][3]
+                            bid: $scope.Selected[0].source,
+                            eid: $scope.Selected[1].target
                         }
                     }).success(function (data, status) {
                         $('#map').addClass("col-md-9");
