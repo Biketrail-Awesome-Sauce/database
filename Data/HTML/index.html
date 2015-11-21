@@ -370,8 +370,10 @@
             //User's Location Marker
             L.marker([latitude, longitude]).bindPopup("You").addTo(map);
             var d = new Date();
-            var determiner = new Date(2015,10,1);
-            if(d.getDate()<=determiner.getDate() && d.getMonth()<=determiner.getMonth()) {
+            var determiner1 = new Date(2015,10,1);
+            var determiner2 = new Date(2015,4,1);
+            if(d.getDate()<=determiner1.getDate() && d.getMonth()<=determiner1.getMonth() &&
+                    d.getDate()>=determiner2.getDate() && d.getMonth()>=determiner2.getMonth()) {
                 $.get("/NR/", function (data) {
                     L.geoJson(data, {
                         pointToLayer: function (feature, latlng) {
