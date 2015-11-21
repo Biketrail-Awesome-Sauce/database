@@ -369,28 +369,29 @@
 
             //User's Location Marker
             L.marker([latitude, longitude]).bindPopup("You").addTo(map);
+            var d = new Date();
+            var determiner = new Date(2015,10,1);
+            if(d.getDate()<=determiner.getDate() && d.getMonth()<=determiner.getMonth()) {
+                $.get("/NR/", function (data) {
+                    L.geoJson(data, {
+                        pointToLayer: function (feature, latlng) {
+                            return L.circleMarker(latlng, {
+                                radius: 8,
+                                fillColor: "#ff7800",
+                                color: "#000",
+                                weight: 1,
+                                opacity: 1,
+                                fillOpacity: 0.8
+                            });
+                        },
+                        onEachFeature: function (feature, layer) {
+                            layer.bindPopup("<h3>" + feature.properties.name + "</h3><ul><li>Number of Bikes: " + feature.properties.nbBikes + "</li>"
+                                    + "  <li>Empty Docks: " + feature.properties.nbEmptyDocks + "</li></ul>")
 
-
-            $.get("/NR/", function (data) {
-                L.geoJson(data, {
-                    pointToLayer: function (feature, latlng) {
-                        return L.circleMarker(latlng, {
-                            radius: 8,
-                            fillColor: "#ff7800",
-                            color: "#000",
-                            weight: 1,
-                            opacity: 1,
-                            fillOpacity: 0.8
-                        });
-                    },
-                    onEachFeature: function (feature, layer) {
-                        layer.bindPopup("<h3>"+feature.properties.name+"</h3><ul><li>Number of Bikes: " + feature.properties.nbBikes + "</li>"
-                                + "  <li>Empty Docks: " + feature.properties.nbEmptyDocks + "</li></ul>")
-
-                    }
-                }).addTo(map);
-            });
-
+                        }
+                    }).addTo(map);
+                });
+            }
         }
 
         function getGeoJson(lat, lon) {
