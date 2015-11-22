@@ -187,7 +187,7 @@
 
 <script type="text/javascript">
 
-    angular.module('SearchAndRouteModule', ['ui.bootstrap']).controller('SearchAndRouteController', function ($scope, $http) {
+    angular.module('SearchAndRouteModule', ['ui.bootstrap']).controller('SearchAndRouteController', function ($scope, $http, $q) {
         var latitude;
         var longitude;
         var latLng;
@@ -210,7 +210,21 @@
                     lng: longitude
                 }
             }).then(function (response) {
-                return response.data;
+                if(response.data.length>0){
+                    console.log(response.data);
+                return response.data;}else{
+
+                  return $http.get('http://nominatim.openstreetmap.org', {params: {q: val, format:'json', bounded:1,
+                  viewbox:"-97.5,49.5,-89.00,43.0", limit: 5}}).then(function(response){
+                                var list_object = [];
+                              console.log(response.data);
+                                for(var i=0; i<response.data.length; i++){
+                                    list_object.push({'name': response.data[i].display_name, 'target': null,
+                                    'source': null, 'lat': response.data[i].lat, 'lon': response.data[i].lon})
+                                }
+                                return list_object;
+                            });
+                }
 
             });
         };
