@@ -7,7 +7,7 @@
     <title>MNBikeways | A Geo:Code App</title>
 
     <link rel="shortcut icon" type="images/x-icon" href="static/favicon.ico">
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css"/>
     <link href='https://api.tiles.mapbox.com/mapbox.js/v1.6.4/mapbox.css' rel='stylesheet'/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
@@ -210,20 +210,27 @@
                     lng: longitude
                 }
             }).then(function (response) {
-                if(response.data.length>0){
+                if (response.data.length > 0) {
                     console.log(response.data);
-                return response.data;}else{
+                    return response.data;
+                } else {
 
-                  return $http.get('http://nominatim.openstreetmap.org', {params: {q: val, format:'json', bounded:1,
-                  viewbox:"-97.5,49.5,-89.00,43.0", limit: 5}}).then(function(response){
-                                var list_object = [];
-                              console.log(response.data);
-                                for(var i=0; i<response.data.length; i++){
-                                    list_object.push({'name': response.data[i].display_name, 'target': null,
-                                    'source': null, 'lat': response.data[i].lat, 'lon': response.data[i].lon})
-                                }
-                                return list_object;
-                            });
+                    return $http.get('http://nominatim.openstreetmap.org', {
+                        params: {
+                            q: val, format: 'json', bounded: 1,
+                            viewbox: "-97.5,49.5,-89.00,43.0", limit: 5
+                        }
+                    }).then(function (response) {
+                        var list_object = [];
+                        console.log(response.data);
+                        for (var i = 0; i < response.data.length; i++) {
+                            list_object.push({
+                                'name': response.data[i].display_name, 'target': null,
+                                'source': null, 'lat': response.data[i].lat, 'lon': response.data[i].lon
+                            })
+                        }
+                        return list_object;
+                    });
                 }
 
             });
@@ -237,9 +244,15 @@
 
         $scope.onSelect = function ($item, $model, $label) {
             if ($scope.Selected.length != 2) {
-
-                $scope.Selected.push($item);
-
+                if ($item.target == null || $item.source == null) {
+                    $http.get('/finder/', {params: {'lat': $item.lat, 'lon': $item.lon}}).then(function(response){
+                        $item.source = response.data.id;
+                        $item.target = response.data.id;
+                        $scope.Selected.push($item);
+                    });
+                }else{
+                    $scope.Selected.push($item);
+                }
             }
         };
 
@@ -343,20 +356,22 @@
                         }
                     }).success(function (data, status) {
                         $('#map').addClass("col-md-9");
-                        route = L.geoJson(data.geojson, {style:{color: 'blue'},onEachFeature: function (feature, layer) {
-                            layer.bindPopup("<h3>"+feature.properties.name+"</h3><ul><li>"+feature.properties.tag+"</li></ul>");
-                            layer.on({
-                                click: function () {
-                                    layer.openPopup();
-                                },
-                                mouseover: function () {
-                                    layer.openPopup();
-                                },
-                                mouseout: function () {
-                                    layer.closePopup();
-                                }
-                            });
-                        }});
+                        route = L.geoJson(data.geojson, {
+                            style: {color: 'blue'}, onEachFeature: function (feature, layer) {
+                                layer.bindPopup("<h3>" + feature.properties.name + "</h3><ul><li>" + feature.properties.tag + "</li></ul>");
+                                layer.on({
+                                    click: function () {
+                                        layer.openPopup();
+                                    },
+                                    mouseover: function () {
+                                        layer.openPopup();
+                                    },
+                                    mouseout: function () {
+                                        layer.closePopup();
+                                    }
+                                });
+                            }
+                        });
                         $("#route_names").append("<table class='table table-bordered'><thead><tr><th class='col-md-6'>Path</th><th class='col-md-6'>Distance</th></thead><tbody id='tbody_names'></tbody></table>")
                         for (var i = 0; i < data.names.length; i++) {
 
@@ -398,7 +413,7 @@
                         });
                     },
                     onEachFeature: function (feature, layer) {
-                        layer.bindPopup("<h3>"+feature.properties.name+"</h3><ul><li>Number of Bikes: " + feature.properties.nbBikes + "</li>"
+                        layer.bindPopup("<h3>" + feature.properties.name + "</h3><ul><li>Number of Bikes: " + feature.properties.nbBikes + "</li>"
                                 + "  <li>Empty Docks: " + feature.properties.nbEmptyDocks + "</li></ul>")
 
                     }
@@ -412,7 +427,7 @@
             $http.get("/geoJson/", {params: {lat1: lat, lng1: lon}}).success(function (data, status) {
                 L.geoJson(data, {
                     style: {color: 'green'}, onEachFeature: function (feature, layer) {
-                        layer.bindPopup('<h3>'+feature.properties.name+'</h3><ul><li>'+feature.properties.tag+'</li></ul>');
+                        layer.bindPopup('<h3>' + feature.properties.name + '</h3><ul><li>' + feature.properties.tag + '</li></ul>');
                         layer.on({
                             click: function () {
                                 layer.openPopup();

@@ -7,7 +7,7 @@ from django.contrib.gis.measure import D
 from django.contrib.gis.geos import GEOSGeometry, MultiLineString
 from django.db import connection
 
-from Data.models import BestBikeTrails, MinnesotaBikeTrails
+from Data.models import BestBikeTrails, Bikeintersections
 
 from requests import get
 import xml.etree.ElementTree as ET
@@ -17,6 +17,23 @@ from geojson import dumps as geoDumps
 class MainPage(TemplateView):
     def get(self, request, *args, **kwargs):
         return render(request, 'index.html')
+
+class FindIntersection(TemplateView):
+    def get(self, request, *args, **kwargs):
+        lat = float(request.GET.get('lat',-93))
+        lng = float(request.GET.get('lon',45))
+        qs = Bikeintersections.objects.filter(the_geom__dwithin=(Point(lat, lng, srid=4326), D(m=500)))
+        qs = qs.distance(Point(lat=lat, long=lng, srid=4326))
+        qs = qs.order_by('distance')
+        try:
+            result = qs[0]
+        except:
+            result = {'id': None}
+
+        return HttpResponse(dumps({'id': result['id'] }), content_type="application/json")
+
+
+
 
 
 class SearchAjax(TemplateView):
