@@ -18,22 +18,6 @@ class MainPage(TemplateView):
     def get(self, request, *args, **kwargs):
         return render(request, 'index.html')
 
-class FindIntersection(TemplateView):
-    def get(self, request, *args, **kwargs):
-        lat = float(request.GET.get('lat',-93))
-        lng = float(request.GET.get('lon',45))
-        qs = Bikeintersections.objects.filter(the_geom__dwithin=(Point(lat, lng, srid=4326), D(m=500)))
-        qs = qs.distance(Point(lat=lat, long=lng, srid=4326))
-        qs = qs.order_by('distance')
-        try:
-            result = qs[0]
-        except:
-            result = {'id': None}
-
-        return HttpResponse(dumps({'id': result['id'] }), content_type="application/json")
-
-
-
 
 
 class SearchAjax(TemplateView):
@@ -63,8 +47,32 @@ class GeoJsonAjax(View):
 
 class RouterAjax(View):
     def get(self, request, *args, **kwargs):
-        id1 =  request.GET.get('bid')
+        lat1 = request.GET.get('blat')
+        lon1 = request.GET.get('blon')
+        lat2 = request.GET.get('elat')
+        lon2 = request.GET.get('elon')
+        id1 = request.GET.get('bid')
         id2 = request.GET.get('eid')
+        if id1 is None:
+            qs = Bikeintersections.objects.filter(the_geom__dwithin=(Point(float(lon1), float(lat1), srid=4326), 1000))
+            qs = qs.distance(Point(float(lon1), float(lat1), srid=4326))
+            qs = qs.order_by('distance')
+            try:
+                id1 = qs[0].id
+            except:
+                id1 = None
+
+        if id2 is None:
+            qs = Bikeintersections.objects.filter(the_geom__dwithin=(Point(float(lon2), float(lat2), srid=4326), 1000))
+            qs = qs.distance(Point(float(lon2), float(lat2), srid=4326))
+            qs = qs.order_by('distance')
+            try:
+                print(qs[0])
+                id2 = qs[0].id
+            except:
+                id2 = None
+
+
         sql_inside_of_function = "select id, source, target, cost * (4-rtng_ccpx) * (4-rtng_mean) * (4-rtng_cbf7)+case when one_way=-1 then 1000000 else 0 END as cost,cost * (4-rtng_ccpx)*(4-rtng_mean)*(4-rtng_cbf7) + case when one_way=1 then 1000000 else 0 END as reverse_cost from \"Data_minnesotabiketrails\"\'"
         sql_function = "select ccp_name, the_geom, bt.cost, bt.item_tags from pgr_dijkstra(\'"
 

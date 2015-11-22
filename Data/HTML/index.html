@@ -244,15 +244,8 @@
 
         $scope.onSelect = function ($item, $model, $label) {
             if ($scope.Selected.length != 2) {
-                if ($item.target == null || $item.source == null) {
-                    $http.get('/finder/', {params: {'lat': $item.lat, 'lon': $item.lon}}).then(function(response){
-                        $item.source = response.data.id;
-                        $item.target = response.data.id;
-                        $scope.Selected.push($item);
-                    });
-                }else{
                     $scope.Selected.push($item);
-                }
+
             }
         };
 
@@ -352,7 +345,12 @@
                     $http.get('/router/', {
                         params: {
                             bid: $scope.Selected[0].source,
-                            eid: $scope.Selected[1].target
+                            blat: $scope.Selected[0].lat,
+                            blon: $scope.Selected[0].lon,
+                            eid: $scope.Selected[1].target,
+                            elat: $scope.Selected[1].lat,
+                            elon: $scope.Selected[1].lon
+
                         }
                     }).success(function (data, status) {
                         $('#map').addClass("col-md-9");

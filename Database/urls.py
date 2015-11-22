@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.views.decorators.csrf import csrf_exempt
-from Data.views import MainPage, SearchAjax, GeoJsonAjax,RouterAjax, NiceRideAjax, FindIntersection
+from Data.views import MainPage, SearchAjax, GeoJsonAjax,RouterAjax, NiceRideAjax
 
 urlpatterns = patterns('',
     # Examples:
@@ -14,5 +14,4 @@ urlpatterns = patterns('',
     url(r'^geoJson/',csrf_exempt(GeoJsonAjax.as_view())),
     url(r'^router/',csrf_exempt(RouterAjax.as_view())),
     url(r'^NR/',csrf_exempt(NiceRideAjax.as_view())),
-    url(r'^finder/', csrf_exempt(FindIntersection.as_view())),
 )
