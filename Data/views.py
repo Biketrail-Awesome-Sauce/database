@@ -40,7 +40,8 @@ class GeoJsonAjax(View):
     def get(self,request, *args, **kwargs):
         lat = float(request.GET.get('lat1','45'))
         lng = float(request.GET.get('lng1','-93.265'))
-        qs = BestBikeTrails.objects.filter(the_geom__distance_lte=(Point(lng,lat,srid=4326),D(mi=2)))
+        distance = float(request.GET.get('dist', 2))
+        qs = BestBikeTrails.objects.filter(the_geom__distance_lte=(Point(lng,lat,srid=4326),D(m=distance)))
         gj = []
         for item in qs:
             poly = loads(GEOSGeometry(item.the_geom,srid=4326).geojson)
