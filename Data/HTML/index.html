@@ -373,7 +373,8 @@
                         $("#route_names").append("<table class='table table-bordered'><thead><tr><th class='col-md-6'>Path</th><th class='col-md-6'>Distance</th></thead><tbody id='tbody_names'></tbody></table>")
                         for (var i = 0; i < data.names.length; i++) {
 
-                            $('#tbody_names').append("<tr><td>" + data.names[i][0] + "</td><td>" + data.names[i][1] + " meters</td></tr>");
+                            $('#tbody_names').append("<tr><td>" + data.names[i][0] + "</td><td>" + data.names[i][1] +
+                                    " meters</td><td>" + data.names[i][2]+"</td></tr>");
                         }
                         map.addLayer(route);
                         map.fitBounds(data.extent)

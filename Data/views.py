@@ -74,7 +74,7 @@ class RouterAjax(View):
 
 
         sql_inside_of_function = "select id, source, target, cost * (4-rtng_ccpx) * (4-rtng_mean) * (4-rtng_cbf7)+case when one_way=-1 then 1000000 else 0 END as cost,cost * (4-rtng_ccpx)*(4-rtng_mean)*(4-rtng_cbf7) + case when one_way=1 then 1000000 else 0 END as reverse_cost from \"Data_minnesotabiketrails\"\'"
-        sql_function = "select ccp_name, the_geom, bt.cost, bt.item_tags from pgr_dijkstra(\'"
+        sql_function = "select ccp_name, the_geom, bt.cost, bt.item_tags, directions(the_geom, lead(the_geom,1) over (ORDER BY seq))  from pgr_dijkstra(\'"
 
         cursor = connection.cursor()
         cursor.execute(sql_function+sql_inside_of_function+", %s , %s , true,true) join \"Data_minnesotabiketrails\" as bt on bt.id=id2",(str(id1),str(id2),))
@@ -82,7 +82,7 @@ class RouterAjax(View):
         names = []
         gj = []
         for item in all:
-            names.append((item[0],item[2]))
+            names.append((item[0],item[2], item[4]))
             poly = loads(GEOSGeometry(item[1], srid=4326).geojson)
             poly['properties'] = {'name':item[0], 'tag':item[3]}
             gj.append(poly)
@@ -94,12 +94,14 @@ class RouterAjax(View):
         sent_names = []
         dist_on_path = 0
         for i,n in enumerate(names):
+            print 'Name: '+str(n[0]) + " Turn: "+ str(n[2])
             if i==0:
                 previous_name=n[0]
             if n[0]==previous_name:
                 dist_on_path +=n[1]
+                previous_turn = n[2]
             else:
-                sent_names.append((previous_name,"%.2f" % dist_on_path))
+                sent_names.append((previous_name,"%.2f" % dist_on_path, previous_turn))
                 dist_on_path=n[1]
                 previous_name = n[0]
             if i==len(names)-1:
